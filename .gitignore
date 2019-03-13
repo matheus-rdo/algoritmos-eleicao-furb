@@ -1,0 +1,13 @@
+### Code-Java ###
+# Language Support for Java(TM) by Red Hat extension for Visual Studio Code - https://marketplace.visualstudio.com/items?itemName=redhat.java
+
+.project
+.classpath
+.settings
+factoryConfiguration.json
+
+### Java-Web ###
+## ignoring target file
+target/
+
+# End of https://www.gitignore.io/api/java-web,code-java
