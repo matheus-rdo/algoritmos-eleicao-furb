@@ -1,12 +1,23 @@
 package br.com.furb;
 
-/**
- * Hello world!
- *
- */
+import java.util.Timer;
+
+import br.com.furb.task.CreateProcessTask;
+
 public class App {
 
-	public static void main(String[] args) {
+	private static final int CREATE_PROCESS_DELAY = 30000;
 
+	public static void main(String[] args) throws InterruptedException {
+		scheduleTasks();
 	}
+
+	/**
+	 * Agenda as rotinas periodicamente
+	 */
+	private static void scheduleTasks() {
+		Timer timer = new Timer();
+		timer.schedule(new CreateProcessTask(), CREATE_PROCESS_DELAY, CREATE_PROCESS_DELAY);
+	}
+
 }

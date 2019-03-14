@@ -1,10 +1,10 @@
 package br.com.furb.model;
 
-public class Processo {
+public class SystemProcess  {
 
 	private long id;
 
-	public Processo(long id) {
+	public SystemProcess(long id) {
 		this.id = id;
 	}
 
@@ -28,7 +28,7 @@ public class Processo {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Processo other = (Processo) obj;
+		SystemProcess other = (SystemProcess) obj;
 		if (id != other.id)
 			return false;
 		return true;
