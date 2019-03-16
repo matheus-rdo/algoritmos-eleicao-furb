@@ -1,6 +1,6 @@
 package br.com.furb.model;
 
-public class SystemProcess  {
+public class SystemProcess {
 
 	private long id;
 
@@ -10,6 +10,11 @@ public class SystemProcess  {
 
 	public long getId() {
 		return id;
+	}
+
+	@Override
+	public String toString() {
+		return "[ID:" + id + "]";
 	}
 
 	@Override
