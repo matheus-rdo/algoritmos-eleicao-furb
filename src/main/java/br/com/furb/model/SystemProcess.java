@@ -1,15 +1,39 @@
 package br.com.furb.model;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import br.com.furb.Cluster;
+
 public class SystemProcess {
 
-	private long id;
+	private int id;
 
-	public SystemProcess(long id) {
+	public SystemProcess(int id) {
 		this.id = id;
 	}
 
-	public long getId() {
+	public int getId() {
 		return id;
+	}
+
+	public void requestToCoordinator() {
+		if (!Cluster.getInstance().getCoordinator().isPresent()) {
+			startElection();
+		}
+	}
+
+	private void startElection() {
+		List<SystemProcess> processes = Cluster.getInstance().getProcesses();
+		processes.stream().forEach(p -> System.out.print(p.toString() + ","));
+		List<SystemProcess> biggerProcesses = processes.stream().filter(p -> p.id > this.id)
+				.collect(Collectors.toList());
+		if (biggerProcesses.isEmpty()) {
+			Cluster.getInstance().setCoordinator(Optional.of(this));
+		} else {
+			biggerProcesses.stream().forEach(process -> process.startElection());
+		}
 	}
 
 	@Override

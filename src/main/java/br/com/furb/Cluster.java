@@ -35,17 +35,26 @@ public class Cluster {
 		this.processes.add(process);
 	}
 
-	public void desactivateCoordinator() {
-		if (coordinator.isPresent()) {
-			log.info(String.format("Coordenador %s foi inativado", coordinator.get()));
-		}
-	}
-
 	public void desactivateProcess() {
 		int lastIndex = processes.size() - 1;
 		SystemProcess randomProcess = processes.get(new Random().nextInt(lastIndex));
 		this.processes.remove(randomProcess);
 		log.info(String.format("Processo %s desativado", randomProcess.toString()));
+	}
+
+	public void checkCoordinator() {
+		if (!processes.isEmpty()) {
+			int randomIndex = new Random().nextInt(processes.size());
+			SystemProcess randomProcess = processes.get(randomIndex);
+			randomProcess.requestToCoordinator();
+		}
+	}
+
+	public void desactivateCoordinator() {
+		if (coordinator.isPresent()) {
+			log.info(String.format("Coordenador %s foi inativado", coordinator.get()));
+		}
+		this.coordinator = Optional.empty();
 	}
 
 	private SystemProcess generateNewProcess() {
@@ -55,7 +64,22 @@ public class Cluster {
 			return generateNewProcess();
 
 		return process;
+	}
 
+	public Optional<SystemProcess> getCoordinator() {
+		return coordinator;
+	}
+
+	public void setCoordinator(Optional<SystemProcess> coordinator) {
+		if (coordinator.isPresent()) {
+			log.info(String.format("Processo %s foi eleito o novo coordenador", coordinator.get().toString()));
+		}
+
+		this.coordinator = coordinator;
+	}
+
+	public List<SystemProcess> getProcesses() {
+		return processes;
 	}
 
 }
