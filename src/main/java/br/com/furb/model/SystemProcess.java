@@ -4,9 +4,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import br.com.furb.Cluster;
 
 public class SystemProcess {
+
+	private static final Logger log = LoggerFactory.getLogger(Cluster.class);
 
 	private int id;
 
@@ -20,20 +25,26 @@ public class SystemProcess {
 
 	public void requestToCoordinator() {
 		if (!Cluster.getInstance().getCoordinator().isPresent()) {
+			log.info("Uma eleição foi convocada pelo processo " + this.toString());
 			startElection();
 		}
 	}
 
 	private void startElection() {
-		List<SystemProcess> processes = Cluster.getInstance().getProcesses();
-		processes.stream().forEach(p -> System.out.print(p.toString() + ","));
-		List<SystemProcess> biggerProcesses = processes.stream().filter(p -> p.id > this.id)
-				.collect(Collectors.toList());
-		if (biggerProcesses.isEmpty()) {
-			Cluster.getInstance().setCoordinator(Optional.of(this));
-		} else {
-			biggerProcesses.stream().forEach(process -> process.startElection());
+		Cluster cluster = Cluster.getInstance();
+		if (!cluster.getCoordinator().isPresent()) {
+			List<SystemProcess> processes = cluster.getProcesses();
+			List<SystemProcess> biggerProcesses = processes.stream().filter(p -> p.id > this.id)
+					.collect(Collectors.toList());
+			if (biggerProcesses.isEmpty()) {
+				cluster.setCoordinator(Optional.of(this));
+			} else {
+				biggerProcesses.stream().forEach(process -> {
+					process.startElection();
+				});
+			}
 		}
+
 	}
 
 	@Override
