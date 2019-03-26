@@ -9,11 +9,11 @@ import br.com.furb.task.DesactivateProcessTask;
 
 public class App {
 
-	private static final int CREATE_PROCESS_DELAY = 3000;
-	private static final int DESACTIVATE_COORDINATOR_DELAY = 10000;
-	private static final int DESACTIVATE_PROCESS_DELAY = 8000;
-	private static final int CHECK_COORDINATOR_DELAY = 2500;
-
+	private static final int CREATE_PROCESS_DELAY = 30000;
+	private static final int DESACTIVATE_COORDINATOR_DELAY = 100000;
+	private static final int DESACTIVATE_PROCESS_DELAY = 80000;
+	private static final int CHECK_COORDINATOR_DELAY = 25000;
+	
 	public static void main(String[] args) throws InterruptedException {
 		scheduleTasks();
 	}

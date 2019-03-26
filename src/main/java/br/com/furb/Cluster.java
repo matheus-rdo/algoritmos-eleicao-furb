@@ -52,6 +52,7 @@ public class Cluster {
 
 	public void desactivateCoordinator() {
 		if (coordinator.isPresent()) {
+			this.processes.remove(coordinator.get());
 			log.info(String.format("Coordenador %s foi inativado", coordinator.get()));
 		}
 		this.coordinator = Optional.empty();
